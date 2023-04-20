@@ -1,10 +1,10 @@
 import random
 import time
 
-num_values = int(input("Enter number of values to generate: "))
-start_time = int(input("Enter starting point for start time (in milliseconds): "))
-interval = int(input("Enter interval for start time (in milliseconds): "))
-jump_frequency = int(input("Enter jump frequency (every X iterations): "))
+num_values = int(input("Enter number of notes to generate: "))
+start_time = int(input("Enter first note position (in milliseconds): "))
+interval = int(input("Enter time between notes (in milliseconds): "))
+jump_frequency = int(input("Enter jump frequency (every nth note): "))
 
 # generate an initial random value
 lane_values = [random.randint(1, 4)]
