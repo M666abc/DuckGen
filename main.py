@@ -6,7 +6,7 @@ start_time = int(input("Enter first note position (in milliseconds): "))
 interval = int(input("Enter time between notes (in milliseconds): "))
 jump_frequency = int(input("Enter jump frequency (every nth note): "))
 
-# generate an initial random value
+# generate the first ran val
 lane_values = [random.randint(1, 4)]
 previous_lanes = lane_values[-4:]
 
@@ -21,7 +21,7 @@ for i in range(1, num_values):
         previous_lanes.pop(0)
         previous_lanes.append(jump_lane)
     else:
-        # generate a random value that is different from the previous value
+        # value different than used (doesnt work lmaoooo)
         available_lanes = [1, 2, 3, 4]
         for lane in previous_lanes:
             if lane in available_lanes:
