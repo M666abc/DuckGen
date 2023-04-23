@@ -1,34 +1,44 @@
-import random 
-import time
+import random
 
-num_values = int(input("Enter number of notes to generate: "))
-start_time = int(input("Enter first note position (in milliseconds): "))
-interval = int(input("Enter time between notes (in milliseconds): "))
-jump_frequency = int(input("Enter jump frequency (every nth note): "))
-
-# generate the first ran val
-lane_values = [random.randint(1, 4)]
-previous_lanes = lane_values[-4:]
-
-for i in range(1, num_values):
-    if i % jump_frequency == 0:
-        # add jump
-        jump_lane = random.choice([lane for lane in range(1, 5) if lane not in previous_lanes])
-        lane_values.append(jump_lane)
-        print("- StartTime: " + str(start_time) + "\n  Lane: " + str(previous_lanes[-1]) + "\n  KeySounds: []")
-        start_time += interval
-        print("- StartTime: " + str(start_time) + "\n  Lane: " + str(jump_lane) + "\n  KeySounds: []")
-        previous_lanes.pop(0)
-        previous_lanes.append(jump_lane)
-    else:
-        # value different than used (doesnt work lmaoooo)
-        available_lanes = [1, 2, 3, 4]
-        for lane in previous_lanes:
-            if lane in available_lanes:
+def generate_notes(num_values, jump_frequency):
+    # generate the first ran val
+    lane_values = [[random.randint(1, 4)]]
+    previous_lanes = lane_values[-1]
+    for i in range(1, num_values):
+        if i % jump_frequency == 0:
+            # add jump
+            jump_lane = random.choice([lane for lane in range(1, 5) if lane not in previous_lanes])
+            previous_lanes.append(jump_lane)
+            jump_lane2 = random.choice([lane for lane in range(1, 5) if lane not in previous_lanes])
+            lane_values.append([jump_lane, jump_lane2])
+            previous_lanes = [jump_lane, jump_lane2]
+        else:
+            available_lanes = [1, 2, 3, 4]
+            for lane in previous_lanes:
                 available_lanes.remove(lane)
-        lane_value = random.choice(available_lanes)
-        lane_values.append(lane_value)
-        print("- StartTime: " + str(start_time) + "\n  Lane: " + str(lane_value) + "\n  KeySounds: []")
-        previous_lanes.pop(0)
-        previous_lanes.append(lane_value)
-        start_time += interval
+            lane_value = random.choice(available_lanes)
+            lane_values.append([lane_value])
+            previous_lanes = [lane_value]
+    return lane_values
+
+def generate_output(lane_values, start_time, interval):
+    output = ""
+    current_time = start_time
+    for i in range(len(lane_values)):
+        for lane in lane_values[i]:
+            output += f"- StartTime: {current_time}\n  Lane: {lane}\n  KeySounds: []\n"
+        current_time += interval
+    return output
+
+def main():
+    num_values = int(input("Enter number of notes to generate: "))
+    start_time = int(input("Enter first note position (in milliseconds): "))
+    interval = int(input("Enter time between notes (in milliseconds): "))
+    jump_frequency = int(input("Enter jump frequency (every nth note): "))
+
+    lane_values = generate_notes(num_values, jump_frequency)
+    output = generate_output(lane_values, start_time, interval)
+    print(output)
+
+if __name__ == "__main__":
+    main()
