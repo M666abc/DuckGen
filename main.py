@@ -21,23 +21,26 @@ def generate_notes(num_values, jump_frequency):
             previous_lanes = [lane_value]
     return lane_values
 
-def generate_output(lane_values, start_time, interval):
+def generate_output(lane_values, start_time, interval, stop_time=None):
     output = ""
     current_time = start_time
     for i in range(len(lane_values)):
+        if stop_time is not None and current_time >= stop_time:
+            break
         for lane in lane_values[i]:
             output += f"- StartTime: {current_time}\n  Lane: {lane}\n  KeySounds: []\n"
         current_time += interval
     return output
 
 def main():
-    num_values = int(input("Enter number of notes to generate: "))
+    num_values = int(input("Enter number of notes to generate (put in a random number if you have a StopTime): "))
     start_time = int(input("Enter first note position (in milliseconds): "))
     interval = int(input("Enter time between notes (in milliseconds): "))
     jump_frequency = int(input("Enter jump frequency (every nth note): "))
+    stop_time = int(input("Enter stop time (in milliseconds): "))
 
     lane_values = generate_notes(num_values, jump_frequency)
-    output = generate_output(lane_values, start_time, interval)
+    output = generate_output(lane_values, start_time, interval, stop_time)
     print(output)
 
 if __name__ == "__main__":
